@@ -1,5 +1,7 @@
 import React from 'react';
 import Header from '../components/Header.tsx'
+import Hero from '@/components/Hero.tsx';
+import Footer from '@/components/Footer.tsx';
 type Props = {
     children: React.ReactNode;
 }
@@ -9,14 +11,11 @@ const Layout = ({ children }: Props) => {
         <>
             <div className="flex flex-col min-h-screen">
                 <Header />
+                <Hero/>
                 <div className="container mx-auto flex-1 py-10">{children}</div>
+                <Footer/>
             </div>
-            <div className="container">
-                <div className="flex flex-col">
-                    <p>1</p>
-                    <p>2</p>
-                </div>
-            </div>
+            
         </>
     )
 }
