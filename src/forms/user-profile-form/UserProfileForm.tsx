@@ -2,7 +2,9 @@ import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod"
 const formSchema = z.object({
@@ -16,14 +18,19 @@ const formSchema = z.object({
 type UserFormData = z.infer<typeof formSchema>
 
 type Props = {
+    currentUser: User,
     onSave: (userProfileData: UserFormData) => void;
     isLoading: boolean;
 }
 
-const UserProfileForm = ({ onSave, isLoading }: Props) => {
+const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
     const form = useForm<UserFormData>({
         resolver: zodResolver(formSchema),
+        defaultValues: currentUser
     })
+    useEffect(() => {
+        form.reset(currentUser)
+    }, [currentUser, form])
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSave)} className="space-y-4 bg-gray-50 rounded-lg md:p-10">
@@ -47,7 +54,7 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
                         <FormControl>
                             <Input {...field} className="bg-white"></Input>
                         </FormControl>
-                        <FormMessage/>
+                        <FormMessage />
                     </FormItem>)
                 }} />
 
@@ -58,7 +65,7 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
                             <FormControl>
                                 <Input {...field} className="bg-white"></Input>
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage />
                         </FormItem>)
                     }} />
                     <FormField control={form.control} name="city" render={({ field }) => {
@@ -67,7 +74,7 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
                             <FormControl>
                                 <Input {...field} className="bg-white"></Input>
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage />
                         </FormItem>)
                     }} />
                     <FormField control={form.control} name="country" render={({ field }) => {
@@ -76,7 +83,7 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
                             <FormControl>
                                 <Input {...field} className="bg-white"></Input>
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage />
                         </FormItem>)
                     }} />
                 </div>
