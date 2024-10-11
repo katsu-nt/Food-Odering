@@ -8,11 +8,12 @@ import { useGetMyUser } from "@/api/MyUserApi";
 
 type Props = {
     onCheckout: (userFormData: UserFormData) => void
-    disabled: boolean
+    disabled: boolean;
+    isLoading: boolean
 }
 
 
-const CheckoutButton = ({ onCheckout, disabled }: Props) => {
+const CheckoutButton = ({ onCheckout, disabled, isLoading }: Props) => {
     const { isAuthenticated, isLoading: isAuthLoading, loginWithRedirect } = useAuth0()
     const { pathname } = useLocation()
     const { currentUser, isLoading: isGetUserLoading } = useGetMyUser()
@@ -26,7 +27,7 @@ const CheckoutButton = ({ onCheckout, disabled }: Props) => {
     if (!isAuthenticated) {
         return <Button onClick={onLogin} className="bg-orange-500 flex-1">Log in to check out</Button>
     }
-    if (isAuthLoading || !currentUser) {
+    if (isAuthLoading || !currentUser || isLoading) {
         return <LoadingButton />
     }
     return (
@@ -36,7 +37,7 @@ const CheckoutButton = ({ onCheckout, disabled }: Props) => {
             </DialogTrigger>
             <DialogContent className="max-w-[425px] md:min-w-[700px] bg-gray-50">
                 <DialogTitle></DialogTitle>
-                <UserProfileForm currentUser={currentUser} onSave={onCheckout} isLoading={isGetUserLoading} title="Confirm Delivery Details" buttonText="Continue to Payment"/>
+                <UserProfileForm currentUser={currentUser} onSave={onCheckout} isLoading={isGetUserLoading} title="Confirm Delivery Details" buttonText="Continue to Payment" />
             </DialogContent>
         </Dialog>
     )
