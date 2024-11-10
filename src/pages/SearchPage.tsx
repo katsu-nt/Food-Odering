@@ -5,6 +5,7 @@ import SearchBar, { SearchForm } from "@/components/SearchBar";
 import SearchResultCard from "@/components/SearchResultCard";
 import SearchResultInfo from "@/components/SearchResultInfo";
 import SortOptionDropdown from "@/components/SortOptionDropdown";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -67,7 +68,13 @@ const SearchPage = () => {
     }
 
     if (isLoading) {
-        return <span>Loading...</span>
+        return <div className="flex items-center space-x-4">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[200px]" />
+            </div>
+        </div>
     }
 
     if (!results?.data || !city) {
@@ -82,7 +89,7 @@ const SearchPage = () => {
             <div id="main-content" className="flex flex-col gap-5">
                 <SearchBar searchQuery={searchState.searchQuery} onSubmit={setSearchQuery} placeHolder="Search by Cuisine or Restaurant Name" onReset={resetSearch} />
                 <div className="flex flex-col justify-between gap-3 lg:flex-row"><SearchResultInfo total={results.pagination.total} city={city}></SearchResultInfo>
-                <SortOptionDropdown onChange={(value) => setSortOption(value)} sortOption={searchState.sortOption} /></div>
+                    <SortOptionDropdown onChange={(value) => setSortOption(value)} sortOption={searchState.sortOption} /></div>
                 {results.data.map((restaurant) => (<SearchResultCard restaurant={restaurant}></SearchResultCard>))}
                 <PaginationSelector page={results.pagination.page} pages={results.pagination.pages} onPageChange={setPage} />
             </div>

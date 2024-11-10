@@ -1,4 +1,5 @@
 import { useCreateMyUser } from "@/api/MyUserApi";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +20,13 @@ const AuthCallbackPage = () => {
         navigate("/")
     }, [createUser, navigate, user])
     return <>
-        Loading...</>
+        <div className="flex items-center space-x-4">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[200px]" />
+            </div>
+        </div></>
 }
 
 export default AuthCallbackPage;
